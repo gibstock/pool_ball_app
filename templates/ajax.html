@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/main.css">
+  <title>Ajax Page</title>
+</head>
+<body>
+  <div id="wrapper">
+    <div id="container">
+      <div id="container-header">
+        <h1>Pool Ball Characters</h1>
+        <div id="container-buttons">
+          <button id="solids">Get Solids</button>
+          <button id="stripes">Get Stripes</button>
+
+        </div>
+
+      </div>
+      <div id="root"></div>
+
+    </div>
+
+  </div>
+  <script>
+    let btnSolids = document.getElementById('solids');
+    let btnStripes = document.getElementById('stripes');
+    const colors = ['yellow', 'blue', 'red', 'purple', 'orange', 'green','rgb(128, 12, 12)'];
+    function getSolids() {
+      
+      fetch('/api/poolSolidBalls')
+      .then(response => response.json())
+      .then(data => {
+        let myRoot = document.querySelector('#root');
+        let oldDiv = document.querySelector('.ballBackground');
+        if(oldDiv) {
+          oldDiv.remove();
+        }
+        let ballCharacteristics = document.createElement('div');
+        ballCharacteristics.classList.add('ballBackground');
+        for(let i = 0; i < data.length; i++) {
+          let balls = document.createElement('div');
+          balls.classList.add('balls');
+          balls.style.backgroundColor = `${colors[i]}`;
+          balls.style.border = `1px solid ${colors[i]}`;
+          balls.style.boxShadow = `inset 3px 5px 15px 5px #eff, inset -3px -4px 25px 5px #222 `;
+          let ballNumber = document.createElement('div');
+          ballNumber.classList.add('ball_number');
+          ballNumber.innerText = `${data[i].ball}`;
+          // let ballColor = document.createElement('p');
+          // ballColor.innerText = `Color: ${data[i].color}`;
+          // let ballFaction = document.createElement('p');
+          // ballFaction.innerText = `Faction: ${data[i].faction}`;
+  
+  
+  
+          balls.appendChild(ballNumber)
+          // balls.appendChild(ballColor)
+          // balls.appendChild(ballFaction)
+
+          ballCharacteristics.appendChild(balls)
+  
+          myRoot.appendChild(ballCharacteristics);
+        }
+      })
+    }
+    function getStripes() {
+      
+      fetch('/api/poolStripeBalls')
+      .then(response => response.json())
+      .then(data => {
+        let myRoot = document.querySelector('#root');
+        let oldDiv = document.querySelector('.ballBackground');
+        if(oldDiv) {
+          oldDiv.remove();
+        }
+        let ballCharacteristics = document.createElement('div');
+        ballCharacteristics.classList.add('ballBackground');
+        for(let i = 0; i < data.length; i++) {
+          let balls = document.createElement('div');
+          balls.classList.add('balls');
+          balls.style.backgroundColor = `#fff`;
+          balls.style.border = `1px solid ${colors[i]}`;
+          balls.style.boxShadow = `inset 3px 5px 15px 5px #eff, inset -3px -4px 25px 5px #222 `;
+          let stripeColorStrip = document.createElement('div');
+          let ballNumber = document.createElement('div');
+          stripeColorStrip.classList.add('striped_ball_number')
+          ballNumber.classList.add('ball_number_smaller');
+          stripeColorStrip.style.backgroundColor = `${colors[i]}`
+          ballNumber.innerText = `${data[i].ball}`;
+          // let ballColor = document.createElement('p');
+          // ballColor.innerText = `Color: ${data[i].color}`;
+          // let ballFaction = document.createElement('p');
+          // ballFaction.innerText = `Faction: ${data[i].faction}`;
+  
+  
+          stripeColorStrip.appendChild(ballNumber)
+          balls.appendChild(stripeColorStrip)
+          // balls.appendChild(ballColor)
+          // balls.appendChild(ballFaction)
+
+          ballCharacteristics.appendChild(balls)
+  
+          myRoot.appendChild(ballCharacteristics);
+        }
+      })
+    }
+    btnSolids.addEventListener('click', getSolids);
+    btnStripes.addEventListener('click', getStripes);
+  </script>
+</body>
+</html>
